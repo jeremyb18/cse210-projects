@@ -8,6 +8,8 @@ class Program
         string StringGrade = Console.ReadLine();
         int NumberGrade = int.Parse(StringGrade);
         string letter = "F";
+        string Sign = "";
+        
         if ( NumberGrade >= 90)
         {
             letter = "A";
@@ -18,7 +20,13 @@ class Program
         } else if (NumberGrade >= 60){
             letter = "D";
         }
-        Console.WriteLine($"Your grade is a {letter}");
+        if (NumberGrade%10 <3 && letter != "F")
+        {
+            Sign = "-";
+        } else if (NumberGrade%10 >= 7 && letter != "F" && letter != "A"){
+            Sign = "+";
+        }
+        Console.WriteLine($"Your grade is a {letter}{Sign}");
         if (NumberGrade >= 70)
         {
             Console.WriteLine($"Congratulation you passed your class");

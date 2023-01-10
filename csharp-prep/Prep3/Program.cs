@@ -8,7 +8,7 @@ class Program
         do
         {
             Random randomGenerator = new Random();
-            int MajicNumber = randomGenerator.Next(1, 11);
+            int MajicNumber = randomGenerator.Next(1, 101);
             int Guess;
             int NumberOfGuesses = 0;
             do 

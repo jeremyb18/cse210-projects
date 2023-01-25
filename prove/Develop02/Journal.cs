@@ -16,7 +16,7 @@ class Journal
     }
     public void Menu()
     {
-        Console.WriteLine("Options: \n1- New Entry\n2- Display Journal\n3- Save Journal\n4- Exit Journal");
+        Console.WriteLine("Options: \n1- New Entry\n2- Display Journal\n3- Save Journal\n4- Save and Exit Journal");
         int Choice = int.Parse(Console.ReadLine());
         if( Choice == 1)
         {
@@ -28,6 +28,8 @@ class Journal
         }else if(Choice == 3){
             this.SaveJournal();
             this.Menu();
+        }else if(Choice == 4){
+            this.SaveJournal();
         }
     }
     public void DisplayJournal()

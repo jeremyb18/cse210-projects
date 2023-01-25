@@ -1,13 +1,22 @@
 class Journal
 {
     List<Entry> Entries = new List<Entry>{};
-    public Journal()
-    {
+    string _Name;
+    public Journal(string Name = "")
+    {   
+        this._Name = Name;
+        if(_Name == "")
+        {
+            Console.WriteLine("What would you like to name your Journal?");
+            this._Name = Console.ReadLine();
+        }else{
+            this.LoadJournal();
+        }
         this.Menu();
     }
     public void Menu()
     {
-        Console.WriteLine("Options: \n1- New Entry\n2- Display Journal\n3- Save Journal\n4- Load Journal\n5- Exit Journal");
+        Console.WriteLine("Options: \n1- New Entry\n2- Display Journal\n3- Save Journal\n4- Exit Journal");
         int Choice = int.Parse(Console.ReadLine());
         if( Choice == 1)
         {
@@ -18,8 +27,7 @@ class Journal
             this.Menu();
         }else if(Choice == 3){
             this.SaveJournal();
-        }else if(Choice == 4){
-            this.LoadJournal();
+            this.Menu();
         }
     }
     public void DisplayJournal()
@@ -31,9 +39,7 @@ class Journal
     }
     public void SaveJournal()
     {
-        Console.Write("Type name to save as:");
-        string fileName = Console.ReadLine();
-
+        string fileName = this._Name;
         using (StreamWriter outputFile = new StreamWriter(fileName))
         {
             foreach(Entry entry in Entries)
@@ -42,12 +48,12 @@ class Journal
             }
             
         }
-        this.Menu();
+        Console.WriteLine($"Files Save as {this._Name}");
+        
     }
     public void LoadJournal()
     {
-        Console.Write("Type name of file:");
-        string filename = Console.ReadLine();
+        string filename = this._Name;
         string[] lines = System.IO.File.ReadAllLines(filename);
         for(int i = 0; i < lines.Count(); i+=3)
         {   
@@ -57,6 +63,5 @@ class Journal
             this.Entries[N]._Promt = lines[i+1];
             this.Entries[N]._UserText = lines[i+2];
         }
-        this.Menu();
     }
 }

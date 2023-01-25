@@ -1,13 +1,13 @@
 class Entry
 {
-    public string _Date = DateTime.Now.ToString("dd/MM/yyyy");
+    public string _Date = DateTime.Now.ToShortDateString();
     public string _Promt;
     public string _UserText;
     public Entry(bool FastLoad = false)
     {
         if(FastLoad == false)
         {
-        _Promt = RandomPromtGenerator();
+        _Promt = this.RandomPromtGenerator();
         Console.WriteLine(_Promt);
         Console.Write(" > ");
         _UserText = Console.ReadLine();
@@ -23,7 +23,7 @@ class Entry
             "If I had one thing I could do over today, what would it be?"
         };
         Random randomGenerator = new Random();
-        int RandomNumber = randomGenerator.Next(0, Promts.Count-1);
+        int RandomNumber = randomGenerator.Next(0, Promts.Count);
         return Promts[RandomNumber];
     }
     public void Display()

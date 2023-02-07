@@ -1,0 +1,8 @@
+class Scripture
+{
+    List<Word> Words =  new List<Word>{};
+    public Scripture()
+    {
+
+    }
+}

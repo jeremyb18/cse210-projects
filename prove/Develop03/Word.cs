@@ -25,5 +25,9 @@ class word
     {
         _Hidden = true;
     }
+    public bool isNewVerse()
+    {
+        return _letters.All(char.IsDigit);
+    }
 
 }

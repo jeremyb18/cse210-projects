@@ -17,11 +17,25 @@ class scripture
             _Words.Add(new word(w));
         }
     }
+    public void HideWord(int i)
+    {
+        _Words[i].setHidden();
+    }
     public void Display()
     {
+        Console.Write(_Title);
         foreach(word w in _Words)
         {
+            if(w.isNewVerse())
+            {
+                Console.WriteLine(" ");
+            }
+            Console.Write(" ");
             w.Display();
         }
+    }
+    public int LengthOfScripture()
+    {
+        return _Words.Count;
     }
 }

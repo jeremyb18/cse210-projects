@@ -12,7 +12,7 @@ class Match
         Console.WriteLine("Which Team won?");
         Console.WriteLine($"1) {_Team1.GetTeamName()}");
         Console.WriteLine($"2) {_Team2.GetTeamName()}");
-        string winner = Console.ReadLine();
+        string winner = "1";//Console.ReadLine();
         if(winner == "1")
         {
             _Team1.AddWin();

@@ -8,7 +8,7 @@
     public void CheckIn(){
         _IsCheckedIn = true;
     }
-    public void Display()
+    public virtual void Display()
     {
         Console.WriteLine($"Available: {_IsCheckedIn}");
     }

@@ -17,15 +17,25 @@ static class Menu
                 CreateNewGoal();
                 break;
             case "2":
+                RecordEvents();
                 break;
             case "3":
                 ListGoals();
                 break;
             case "4":
+                ReadWriteFile.Write(Goals);
+                Console.WriteLine("You have successfully saved your goals!");
+                Thread.Sleep(2000);
+                main();
                 break;
             case "5":
+                Goals = ReadWriteFile.Read();
+                Console.WriteLine("You have successfully loaded your goals!");
+                Thread.Sleep(2000);
+                main();
                 break;
             case "6":
+                Console.WriteLine("Good Luck with your goals!");
                 break;
             default:
                 main();
@@ -49,13 +59,13 @@ static class Menu
         switch(input)
         {
             case "1":
-                Goals.Append(new SimpleGoal());
+                Goals.Add(new SimpleGoal());
                 break;
             case "2":
-                Goals.Append(new EternalGoal());
+                Goals.Add(new EternalGoal());
                 break;
             case "3":
-                Goals.Append(new EternalGoal());
+                Goals.Add(new ChecklistGoal());
                 break;
             case "4":
                 main();
@@ -68,16 +78,54 @@ static class Menu
     }
     public static void RecordEvents()
     {
-
+        List<int> currentGoals = new List<int>();
+        for(int i = 0; i < Goals.Count; i++)
+        {
+            if (!Goals[i].Isachieved())
+            {
+                currentGoals.Add(i);
+            }
+        }
+        for(int i = 0; i < currentGoals.Count; i++)
+        {
+                int CG = currentGoals[i];
+                Console.Write($"\n {i+1}. " );
+                Goals[CG].DisplayGoal();
+        }
+        if(currentGoals.Count == 0)
+        {
+            Console.WriteLine("You have no goals at the moment");
+        }
+        Console.WriteLine($"{currentGoals.Count+1}. Back" );
+        int input = IO.ReadInt("Choose an option: ") - 1;
+        if (input == currentGoals.Count)
+        {
+            main();
+        }
+        else if(input < currentGoals.Count)
+        {
+            int idx = currentGoals[input];
+            Goals[idx].RecordEvent();
+            main();
+        }
+        else
+        {
+            RecordEvents();
+        }
+        
+        
     }
     public static void ListGoals()
     {
+        Console.Clear();
+        Console.WriteLine($"\n You have {Goals.Count} goals:");
         for(int i = 0; i < Goals.Count; i++)
         {
             Console.Write($"\n {i+1}." );
             Goals[i].DisplayGoal();
         }
-        Thread.Sleep(3000);
+        Console.WriteLine($"\nPress any enter to continue:" );
+        Console.Read();
         main();
     }
 }

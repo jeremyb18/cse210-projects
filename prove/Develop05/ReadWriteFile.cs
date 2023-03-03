@@ -1,36 +1,45 @@
 using System.IO;
-class ReadWriteFile
+static class ReadWriteFile
 {
-    public void Read()
+    static public List<Goal> Read()
     {
-        string filename = "myFile.txt";
+        string filename = "myGoals.txt";
         string[] lines = System.IO.File.ReadAllLines(filename);
-
-        foreach (string line in lines)
+        List<Goal> Goals = new List<Goal>();
+        Goal.Totalpoints = int.Parse(lines[0]);
+        for(int i = 1; i < lines.Length;i++)
         {
-            string[] parts = line.Split(":");
-
-            string firstName = parts[0];
-            string lastName = parts[1];
+            
+            string[] parts = lines[i].Split(":");
+            
+            string[] attributes = parts[1].Split(",");
+            switch(parts[0])
+            {
+                case "SimpleGoal":
+                    Goals.Add(new SimpleGoal(attributes));
+                    break;
+                case "EternalGoal":
+                    Goals.Add(new EternalGoal(attributes));
+                    break;
+                case "ChecklistGoal":
+                    Goals.Add(new ChecklistGoal(attributes));
+                    break;
+            }
         }
+        return Goals;
     }
-    public void Write()
+    static public void Write(List<Goal> Goals)
     {
         string fileName = "myGoals.txt";
 
         using (StreamWriter outputFile = new StreamWriter(fileName))
         {
-            // You can add text to the file with the WriteLine method
-            outputFile.WriteLine("This will be the first line in the file.");
+            outputFile.WriteLine(Goal.Totalpoints);
+            foreach(Goal g in Goals)
+            {
+                outputFile.WriteLine(g.GetStringRepresentation());
+            }
             
-            // You can use the $ and include variables just like with Console.WriteLine
-            string color = "Blue";
-            outputFile.WriteLine($"My favorite color is {color}");
         }
-    }
-    public void GetString()
-    {
-        Goal I = new EternalGoal();
-        I.GetStringRepresentation();
     }
 }

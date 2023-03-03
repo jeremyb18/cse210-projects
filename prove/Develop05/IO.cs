@@ -8,7 +8,7 @@ static class IO
             Console.Write(txt);
             string input = Console.ReadLine();
             isNumeric = int.TryParse(input, out n);
-        }while(isNumeric);
+        }while(!isNumeric);
         return n;
     }
 }

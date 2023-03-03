@@ -10,11 +10,11 @@ abstract class Goal
     {
         Console.Write("\nWhat would you like to name your goal? ");
         _name = Console.ReadLine();
-        Console.Write("\nWrite a short descrition of your goal: ");
+        Console.Write("\nWrite a short description of your goal: ");
         _description = Console.ReadLine();
         _points = IO.ReadInt("\nHow many points would you like to assign to this goal? ");
     }
-    abstract public void DoGoal();
+    abstract public void RecordEvent();
     public virtual void DisplayGoal()
     {
         if(_achieved)
@@ -25,7 +25,7 @@ abstract class Goal
         {
             Console.Write("[ ]"); 
         }
-        Console.Write($"{_name} ({_description})");
+        Console.Write($" {_name} ({_description})");
     }
     abstract public string GetStringRepresentation();
     public void AddPoints(int N)
@@ -38,5 +38,8 @@ abstract class Goal
         Console.WriteLine($"Congradulation! You got {_points} points");
         Totalpoints += _points;
     }
-
+    public bool Isachieved()
+    {
+        return _achieved;
+    }
 }

@@ -1,0 +1,4 @@
+1450
+SimpleGoal:Date,Go on one date this week,1000,True
+EternalGoal:Read my scriptures,Spend 10  minutes reading my scriptures,50,0
+ChecklistGoal:10 Homework Assignments,Complete one Homework Assignemt,50,10000,False,500,9

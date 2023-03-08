@@ -6,7 +6,7 @@ static class IO
         bool isNumeric = true;
         do{
             Console.Write(txt);
-            string input = Console.ReadLine();
+            string input = "1";//Console.ReadLine();
             isNumeric = int.TryParse(input, out n);
         }while(!isNumeric);
         return n;

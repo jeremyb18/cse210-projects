@@ -4,7 +4,7 @@ class User
     string _Address = "";
     int _UserID = 11223;
     static int PreviousUserID = 0;
-    public Closet MyCloset = new Closet();
+   // public Closet MyCloset = new Closet();
     //List<Clothing> MyCLothing = new List<Clothing>{};
     //List<Clothing> RentedClothing = new List<Clothing>{};
 
@@ -13,38 +13,39 @@ class User
         PreviousUserID += 1;
         _UserID = PreviousUserID;
         Console.WriteLine("What is the user name?");
-        _UserName = Console.ReadLine();
+       // _UserName = Console.ReadLine();
         Console.WriteLine("What is your address?");
-        _Address = Console.ReadLine();
+       // _Address = Console.ReadLine();
     }
-    public RentClothing(Clothing ClothingToRent)
+    public void RentClothing()//Clothing ClothingToRent)
     {
-        RentedClothing.Add(ClothingToRent);
+        //RentedClothing.Add(ClothingToRent);
     }
-    public DisplayCloset()
+    public void DisplayCloset()
     {
-        MyCloset.DisplayItems();
+       // MyCloset.DisplayItems();
     }
     public void DisplayAvaibleCloset()
     {
-        MyCloset.DisplayAvaibleItems();
+       // MyCloset.DisplayAvaibleItems();
     }
-    public string DisplayUserInfo()
+    public void DisplayUserInfo()
     {
-        Console.WriteLine($"User Name:{_UserName}");
+       // Console.WriteLine($"User Name:{_UserName}");
+        
     }
-    public AddClothing()
+    public void AddClothing()
     {
 
-      Clothing newClothing = new Clothing(_Address);
-      MyCLothing.AddItem(newClothing);
+      //Clothing newClothing = new Clothing(_Address);
+      //MyCLothing.AddItem(newClothing);
       
     }
     public string GetUserName()
     {
         return _UserName;
     }
-    public string GetUserID()
+    public int GetUserID()
     {
         return _UserID;
     }

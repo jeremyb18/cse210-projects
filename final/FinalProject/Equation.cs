@@ -10,8 +10,17 @@ class Equation
         EQstring = Input.Replace(" ", "").ToLower();
         EQstring = EQstring.Replace("sin", "$");
         EQstring = EQstring.Replace("cos", "@");
+        /*
         Console.WriteLine(EQstring);
-        Separate();
+        Console.WriteLine(IsNumber());
+        Console.WriteLine(IsOperator());
+        Console.WriteLine(IsNumber());
+        Console.WriteLine(IsVarible());
+        Console.WriteLine(IsNumber());
+        Console.WriteLine(IsVarible());
+        */
+       // Console.WriteLine(IsVarible());
+       Separate();
         Console.WriteLine(EQstring);
         Display();
     }
@@ -64,6 +73,7 @@ class Equation
                 }
                 else
                 {
+                    EQstring = "";
                     break;
                 }
             }
@@ -85,12 +95,15 @@ class Equation
                 if(Varible.ToString() == C)
                 {
                     NameVarible += C;
-                    EQstring = EQstring.Remove(0,1);
-                    C = EQstring[0].ToString();
-                    IsCharVarible = true;
-                    
-                    if(EQstring.Length > 0)
+                    if(EQstring.Length > 1)
                     {
+                        EQstring = EQstring.Remove(0,1);
+                        C = EQstring[0].ToString();
+                        IsCharVarible = true;
+                    }
+                    else
+                    {
+                        EQstring = "";
                         Elements.Add(NameVarible);
                         return true;
                     }

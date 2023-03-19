@@ -4,7 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Equation EQ = new Equation("1 1Sin2AB 3 4 5B");
+        Equation EQ = new Equation("ASDJLKDFie*****");
 
     }
 }

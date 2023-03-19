@@ -1,59 +1,116 @@
 class Equation
 {
     string EQstring = "";
-    char[] CharArray;
     List<string> Elements = new List<string>{};
-    List<string> Operators = new List<string>{"+","-","*","(",")","^","="};
+    List<string> Operators = new List<string>{"+","-","*","(",")","^","=","$","@","e"};
+    string Varibles = "abcdefghijklmnopqrstuvwxyz";
     public Equation(string Input)
     {
+        Console.WriteLine(EQstring.Length);
         EQstring = Input.Replace(" ", "").ToLower();
         EQstring = EQstring.Replace("sin", "$");
         EQstring = EQstring.Replace("cos", "@");
-        CharArray = EQstring.ToCharArray();
         Console.WriteLine(EQstring);
+        Separate();
+        Console.WriteLine(EQstring);
+        Display();
     }
     private void Separate()
     {
-        int n;
-        for(int i = 0; i < EQstring.Length;i++)
+        
+        while(EQstring.Length > 0)
         {
-            string chr = EQstring[i].ToString();
-            if(int.TryParse(EQstring[i].ToString(), out n))
+            if(!IsNumber())
             {
-
+                if(!IsOperator())
+                {
+                    if(!IsVarible())
+                    {
+                        break;
+                    }
+                }
             }
-          //  switch(EQstring[i])
-         //   {
-                //case int.TryParse(EQstring[i], out n):
-                //CreateNewGoal();
-                //break;
-           // case "2":
-                //RecordEvents();
-               // break;
-          //  case "3":
-                //ListGoals();
-              //  break;
-          //  }
         }
     }
-    private bool IsOperator(string C)
+    private bool IsOperator()
     {
+        string C = EQstring[0].ToString();
         foreach(string Operator in Operators)
         {
             if(Operator == C)
             {
+                EQstring = EQstring.Remove(0,1);
+                Elements.Add(C);
                 return true;
             }
         }
         return false;
     }
-    private string IsNumber(string EQstring, int idx,string preString)
+    private bool IsNumber()
     {
         int n;
-        if(int.TryParse(EQstring[idx].ToString(), out n))
+        string C = EQstring[0].ToString();
+        string Number = "";
+        if(int.TryParse(C, out n))
         {
-            return EQstring[idx].ToString();
+            while(int.TryParse(C, out n))
+            {
+                
+                Number += n;
+                if(EQstring.Length > 1)
+                {
+                    EQstring = EQstring.Remove(0,1);
+                    C = EQstring[0].ToString();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            Elements.Add(Number);
+            return true;
         }
-        return "";
+        return false;
+    }
+    private bool IsVarible()
+    {
+        string C = EQstring[0].ToString();
+        string NameVarible = "";
+        bool IsCharVarible;
+        do
+        {
+            IsCharVarible = false;
+            foreach(char Varible in Varibles)
+            {
+                if(Varible.ToString() == C)
+                {
+                    NameVarible += C;
+                    EQstring = EQstring.Remove(0,1);
+                    C = EQstring[0].ToString();
+                    IsCharVarible = true;
+                    
+                    if(EQstring.Length > 0)
+                    {
+                        Elements.Add(NameVarible);
+                        return true;
+                    }
+                    
+                }
+            }
+        }while(IsCharVarible);
+        if(NameVarible.Length > 0)
+        {
+            Elements.Add(NameVarible);
+            return true;
+
+        }
+        return false;
+    }
+    public void Display()
+    {
+        foreach(string E in Elements)
+        {
+            Console.Write($"|{E}|");
+        }
     }
 }

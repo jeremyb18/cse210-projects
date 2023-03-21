@@ -11,4 +11,10 @@ static class IO
         }while(!isNumeric);
         return n;
     }
+    static public string Read(string txt)
+    {
+        Console.Write(txt);
+        string input = Console.ReadLine();
+        return input;
+    }
 }

@@ -1,129 +1,30 @@
-class Equation
+class Equation : Term
 {
-    string EQstring = "";
-    List<string> Elements = new List<string>{};
-    List<string> Operators = new List<string>{"+","-","*","(",")","^","=","$","@","e"};
-    string Varibles = "abcdefghijklmnopqrstuvwxyz";
-    public Equation(string Input)
+    List<Term> _terms = new List<Term>();
+    public static bool IsRunable = true;
+    ReadEquation _EQ;
+    public Equation(string EQstring)
     {
-        Console.WriteLine(EQstring.Length);
-        EQstring = Input.Replace(" ", "").ToLower();
-        EQstring = EQstring.Replace("sin", "$");
-        EQstring = EQstring.Replace("cos", "@");
-        /*
-        Console.WriteLine(EQstring);
-        Console.WriteLine(IsNumber());
-        Console.WriteLine(IsOperator());
-        Console.WriteLine(IsNumber());
-        Console.WriteLine(IsVarible());
-        Console.WriteLine(IsNumber());
-        Console.WriteLine(IsVarible());
-        */
-       // Console.WriteLine(IsVarible());
-       Separate();
-        Console.WriteLine(EQstring);
-        Display();
+        _EQ = new ReadEquation(EQstring);
+        _terms = _EQ.Separate();
+        _type = "Equation";
     }
-    private void Separate()
+    
+    public double Calculate()
     {
-        
-        while(EQstring.Length > 0)
+        for(int i = 0; i < _terms.Count; i++)
         {
-            if(!IsNumber())
+            if(_terms[i]._type == "^")
             {
-                if(!IsOperator())
-                {
-                    if(!IsVarible())
-                    {
-                        break;
-                    }
-                }
+                //_terms[i].Calculate(_terms[i], _terms[i]);
             }
         }
+        return 12.2;
     }
-    private bool IsOperator()
+    public override void Display()
     {
-        string C = EQstring[0].ToString();
-        foreach(string Operator in Operators)
-        {
-            if(Operator == C)
-            {
-                EQstring = EQstring.Remove(0,1);
-                Elements.Add(C);
-                return true;
-            }
-        }
-        return false;
-    }
-    private bool IsNumber()
-    {
-        int n;
-        string C = EQstring[0].ToString();
-        string Number = "";
-        if(int.TryParse(C, out n))
-        {
-            while(int.TryParse(C, out n))
-            {
-                
-                Number += n;
-                if(EQstring.Length > 1)
-                {
-                    EQstring = EQstring.Remove(0,1);
-                    C = EQstring[0].ToString();
-                }
-                else
-                {
-                    EQstring = "";
-                    break;
-                }
-            }
-            Elements.Add(Number);
-            return true;
-        }
-        return false;
-    }
-    private bool IsVarible()
-    {
-        string C = EQstring[0].ToString();
-        string NameVarible = "";
-        bool IsCharVarible;
-        do
-        {
-            IsCharVarible = false;
-            foreach(char Varible in Varibles)
-            {
-                if(Varible.ToString() == C)
-                {
-                    NameVarible += C;
-                    if(EQstring.Length > 1)
-                    {
-                        EQstring = EQstring.Remove(0,1);
-                        C = EQstring[0].ToString();
-                        IsCharVarible = true;
-                    }
-                    else
-                    {
-                        EQstring = "";
-                        Elements.Add(NameVarible);
-                        return true;
-                    }
-                    
-                }
-            }
-        }while(IsCharVarible);
-        if(NameVarible.Length > 0)
-        {
-            Elements.Add(NameVarible);
-            return true;
-
-        }
-        return false;
-    }
-    public void Display()
-    {
-        foreach(string E in Elements)
-        {
-            Console.Write($"|{E}|");
-        }
+        Console.Write("(");
+        _EQ.Display();
+        Console.Write(")");
     }
 }

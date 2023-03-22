@@ -3,8 +3,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        //string Txt = "1234";
-        //Console.WriteLine("Hello World");
         Equation EQ;
         string input = "";
         do

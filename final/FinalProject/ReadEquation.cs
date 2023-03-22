@@ -32,6 +32,97 @@ class ReadEquation
         }
         return Elements;
     }
+    
+    public Term OderOfOperations()
+    {
+        CombineTrig();
+        CombineOperations("^");
+        CombineOperations("*","/");
+        CombineOperations("+","-");
+        return Elements[0];
+    }
+    private void CombineTrig()
+    {
+        for(int i = 0; i < Elements.Count-1; i++)
+        {
+            string Type = Elements[i]._type;
+            double nextValue = Elements[i+1].Value();
+            if(Type == "@" || Type == "$")
+            {
+                if(Double.IsNaN(nextValue))
+                {
+                    Console.WriteLine($"Error in Trig: {Type} : {nextValue}");
+                    Term.IsRunnable = false;
+                    break;
+                }
+            }
+            List<Term> data = new List<Term>{};
+            switch(Type)
+            {
+                case("@"):
+                data.Add(Elements[i+1]);
+                Elements[i].Assign(data);
+                Elements.RemoveAt(i+1);
+                    break;
+                case("$"):
+                data.Add(Elements[i+1]);
+                Elements[i].Assign(data);
+                Elements.RemoveAt(i+1);
+                    break;
+            }
+        }
+    }
+    void CombineOperations(string O1, string O2)
+    {
+        for(int i = 1; i < Elements.Count-1; i++)
+        {
+            string Type = Elements[i]._type;
+            
+            if(Type == O1 || Type == O2)
+            {
+                double pastValue = Elements[i-1].Value();
+                double nextValue = Elements[i+1].Value();
+                if(Double.IsNaN(nextValue) || Double.IsNaN(pastValue))
+                {
+                    Console.WriteLine($"Error with {O1} and {O2}: {Type} : {pastValue} : {nextValue}");
+                    Term.IsRunnable = false;
+                    break;
+                }
+                List<Term> data = new List<Term>{};
+                data.Add(Elements[i-1]);
+                data.Add(Elements[i+1]);
+                Elements[i].Assign(data);
+                Elements.RemoveAt(i+1);
+                Elements.RemoveAt(i-1);
+                i--;
+            }
+        }
+    }
+    void CombineOperations(string O)
+    {
+        for(int i = 1; i < Elements.Count-1; i++)
+        {
+            string Type = Elements[i]._type;
+            if(Type == O)
+            {
+                double pastValue = Elements[i-1].Value();
+                double nextValue = Elements[i+1].Value();
+                if(Double.IsNaN(nextValue) || Double.IsNaN(pastValue))
+                {
+                    Console.WriteLine($"Error with {O}: {Type} : {pastValue} : {nextValue}");
+                    Term.IsRunnable = false;
+                    break;
+                }
+                List<Term> data = new List<Term>{};
+                data.Add(Elements[i-1]);
+                data.Add(Elements[i+1]);
+                Elements[i].Assign(data);
+                Elements.RemoveAt(i+1);
+                Elements.RemoveAt(i-1);
+                i--;
+            }
+        }
+    }
     private bool IsOperator()
     {
         string C = EQstring[0].ToString();
@@ -53,6 +144,14 @@ class ReadEquation
         string Number = "";
         if(int.TryParse(C, out n))
         {
+            int Amount = Elements.Count;
+            if(Amount > 0)
+            {
+                if(Elements[Amount-1]._type == "Varible" || Elements[Amount-1]._type == "Equation")
+                {
+                    Elements.Add(new Operator("*"));
+                }
+            }
             while(int.TryParse(C, out n))
             {
                 
@@ -95,6 +194,14 @@ class ReadEquation
                     else
                     {
                         EQstring = "";
+                        int Amount = Elements.Count;
+                        if(Amount > 0)
+                        {
+                            if(Elements[Amount-1]._type == "Number" || Elements[Amount-1]._type == "Equation")
+                            {
+                                Elements.Add(new Operator("*"));
+                            }
+                        }
                         Elements.Add(new Varible(NameVarible));
                         return true;
                     }
@@ -104,6 +211,14 @@ class ReadEquation
         }while(IsCharVarible);
         if(NameVarible.Length > 0)
         {
+            int Amount = Elements.Count;
+            if(Amount > 0)
+            {
+                if(Elements[Amount-1]._type == "Number" || Elements[Amount-1]._type == "Equation")
+                {
+                    Elements.Add(new Operator("*"));
+                }
+            }
             Elements.Add(new Varible(NameVarible));
             return true;
 
@@ -117,6 +232,14 @@ class ReadEquation
         string subEquation = "";
         if(C == "(")
         {
+            int Amount = Elements.Count;
+            if(Amount > 0)
+            {
+                if(Elements[Amount-1]._type == "Varible" || Elements[Amount-1]._type == "Number" || Elements[Amount-1]._type == "Equation")
+                {
+                    Elements.Add(new Operator("*"));
+                }
+            }
             int CountPerentheses = 1;
             EQstring = StringMethod.RemoveFirst(EQstring);
             C = StringMethod.GetFirst(EQstring);
@@ -158,5 +281,6 @@ class ReadEquation
             E.Display();
             Console.Write(",");
         }
+
     }
 }

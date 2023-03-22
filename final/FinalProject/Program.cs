@@ -5,8 +5,15 @@ class Program
     {
         //string Txt = "1234";
         //Console.WriteLine("Hello World");
-        ReadEquation EQ = new ReadEquation("11(2+1/2) (1+ 3x) /Ca(taw)erf");
-        EQ.Separate();
-        EQ.Display();
+        Equation EQ;
+        string input = "";
+        do
+        {
+            input = IO.Read("- > ");
+            EQ = new Equation(input);
+            Console.WriteLine(EQ.Value());
+
+        }while(input != "1"); 
+
     }
 }

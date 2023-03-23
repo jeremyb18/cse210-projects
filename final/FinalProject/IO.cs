@@ -17,4 +17,15 @@ static class IO
         string input = Console.ReadLine();
         return input;
     }
+    static public List<Term> ReadEquation(string txt)
+    {
+        int n;
+        bool IsDoable = true;
+        do{
+            Console.Write(txt);
+            string input = Console.ReadLine();
+            IsDoable = int.TryParse(input, out n);
+        }while(!IsDoable);
+        return new List<Term>{}; 
+    }
 }

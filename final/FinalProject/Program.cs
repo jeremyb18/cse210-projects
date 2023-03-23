@@ -7,6 +7,7 @@ class Program
         string input = "";
         do
         {
+            Console.WriteLine("Write your Equation below:");
             input = IO.Read("- > ");
             EQ = new Equation(input);
             Console.WriteLine(EQ.Value());

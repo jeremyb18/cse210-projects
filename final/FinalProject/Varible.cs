@@ -26,7 +26,8 @@ class Varible : Term
     }
     public void SetVarible()
     {
-        _value = IO.ReadDouble($"Set {_name} = ");
+        Equation EQ = IO.ReadEquation($"Set {_name} = ");
+        _value = EQ.Value();
         idx = _values.Count;
         _names.Add(_name);
         _values.Add(_value);

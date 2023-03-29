@@ -6,7 +6,7 @@ static class Menu
         Equation EQ;
         Console.WriteLine("Write your Equation below:\n");
         EQ = IO.ReadEquation("- > ");
-        Console.WriteLine(EQ.Value());
+        EQ.DisplayAnswer();
 
 
 

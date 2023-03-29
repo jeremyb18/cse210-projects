@@ -2,6 +2,7 @@ class ReadEquation
 {
     string EQstring = "";
     List<Term> Elements = new List<Term>{};
+    List<Term> SimplifiedElements = new List<Term>{};
     List<string> Operators = new List<string>{"+","-","*","/","^","$","@"};
     public bool IsValid = true;
     string Varibles = "abcdefghijklmnopqrstuvwxyz";
@@ -11,8 +12,8 @@ class ReadEquation
         EQstring = EQstring.Replace("**", "^");
         EQstring = EQstring.Replace("sin", "$");
         EQstring = EQstring.Replace("cos", "@");
-        Separate();
-        IsEquationValid();
+        //Separate();
+        //IsEquationValid();
     }
     public List<Term> Separate()
     {
@@ -68,18 +69,19 @@ class ReadEquation
     }
     public Term OderOfOperations()
     {
+        SimplifiedElements = new List<Term>(Elements);
         CombineTrig();
         CombineOperations("^");
         CombineOperations("*","/");
         CombineOperations("+","-");
-        return Elements[0];
+        return SimplifiedElements[0];
     }
     private void CombineTrig()
     {
-        for(int i = 0; i < Elements.Count-1; i++)
+        for(int i = 0; i < SimplifiedElements.Count-1; i++)
         {
-            string Type = Elements[i]._type;
-            double nextValue = Elements[i+1].Value();
+            string Type = SimplifiedElements[i]._type;
+            double nextValue = SimplifiedElements[i+1].Value();
             if(Type == "@" || Type == "$")
             {
                 if(Double.IsNaN(nextValue))
@@ -93,28 +95,28 @@ class ReadEquation
             switch(Type)
             {
                 case("@"):
-                data.Add(Elements[i+1]);
-                Elements[i].Assign(data);
-                Elements.RemoveAt(i+1);
+                data.Add(SimplifiedElements[i+1]);
+                SimplifiedElements[i].Assign(data);
+                SimplifiedElements.RemoveAt(i+1);
                     break;
                 case("$"):
-                data.Add(Elements[i+1]);
-                Elements[i].Assign(data);
-                Elements.RemoveAt(i+1);
+                data.Add(SimplifiedElements[i+1]);
+                SimplifiedElements[i].Assign(data);
+                SimplifiedElements.RemoveAt(i+1);
                     break;
             }
         }
     }
     void CombineOperations(string O1, string O2)
     {
-        for(int i = 1; i < Elements.Count-1; i++)
+        for(int i = 1; i < SimplifiedElements.Count-1; i++)
         {
-            string Type = Elements[i]._type;
+            string Type = SimplifiedElements[i]._type;
             
             if(Type == O1 || Type == O2)
             {
-                double pastValue = Elements[i-1].Value();
-                double nextValue = Elements[i+1].Value();
+                double pastValue = SimplifiedElements[i-1].Value();
+                double nextValue = SimplifiedElements[i+1].Value();
                 if(Double.IsNaN(nextValue) || Double.IsNaN(pastValue))
                 {
                     Console.WriteLine($"Error with {O1} and {O2}: {Type} : {pastValue} : {nextValue}");
@@ -122,24 +124,24 @@ class ReadEquation
                     break;
                 }
                 List<Term> data = new List<Term>{};
-                data.Add(Elements[i-1]);
-                data.Add(Elements[i+1]);
-                Elements[i].Assign(data);
-                Elements.RemoveAt(i+1);
-                Elements.RemoveAt(i-1);
+                data.Add(SimplifiedElements[i-1]);
+                data.Add(SimplifiedElements[i+1]);
+                SimplifiedElements[i].Assign(data);
+                SimplifiedElements.RemoveAt(i+1);
+                SimplifiedElements.RemoveAt(i-1);
                 i--;
             }
         }
     }
     void CombineOperations(string O)
     {
-        for(int i = 1; i < Elements.Count-1; i++)
+        for(int i = 1; i < SimplifiedElements.Count-1; i++)
         {
-            string Type = Elements[i]._type;
+            string Type = SimplifiedElements[i]._type;
             if(Type == O)
             {
-                double pastValue = Elements[i-1].Value();
-                double nextValue = Elements[i+1].Value();
+                double pastValue = SimplifiedElements[i-1].Value();
+                double nextValue = SimplifiedElements[i+1].Value();
                 if(Double.IsNaN(nextValue) || Double.IsNaN(pastValue))
                 {
                     Console.WriteLine($"Error with {O}: {Type} : {pastValue} : {nextValue}");
@@ -147,11 +149,11 @@ class ReadEquation
                     break;
                 }
                 List<Term> data = new List<Term>{};
-                data.Add(Elements[i-1]);
-                data.Add(Elements[i+1]);
-                Elements[i].Assign(data);
-                Elements.RemoveAt(i+1);
-                Elements.RemoveAt(i-1);
+                data.Add(SimplifiedElements[i-1]);
+                data.Add(SimplifiedElements[i+1]);
+                SimplifiedElements[i].Assign(data);
+                SimplifiedElements.RemoveAt(i+1);
+                SimplifiedElements.RemoveAt(i-1);
                 i--;
             }
         }
@@ -311,7 +313,8 @@ class ReadEquation
         foreach(Term E in Elements)
         {
             E.Display();
-            Console.Write(",");
+            Console.Write("");
+
         }
 
     }

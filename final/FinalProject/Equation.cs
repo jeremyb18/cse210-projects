@@ -3,14 +3,14 @@ class Equation : Term
     List<Term> _terms = new List<Term>();
     Term _term;
     public static bool IsRunable = true;
-    ReadEquation _EQ;
+    ReadEquation _EQreader;
     
     public Equation(string EQstring)
     {
-        _EQ = new ReadEquation(EQstring);
-        _terms = _EQ.Separate();
-        IsValid = _EQ.IsEquationValid();
-        _term = _EQ.OderOfOperations();
+        _EQreader = new ReadEquation(EQstring);
+        _terms = _EQreader.Separate();
+        IsValid = _EQreader.IsEquationValid();
+        _term = _EQreader.OderOfOperations();
         _type = "Equation";
         _value = 0;
     }
@@ -33,7 +33,12 @@ class Equation : Term
     public override void Display()
     {
         Console.Write("(");
-        _EQ.Display();
+        _EQreader.Display();
         Console.Write(")");
+    }
+    public void DisplayAnswer()
+    {
+        _EQreader.Display();
+        Console.Write($" = {Value()}");
     }
 }

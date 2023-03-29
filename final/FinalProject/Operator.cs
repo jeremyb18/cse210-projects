@@ -81,9 +81,8 @@ class Operator : Term
     {
         Console.Write(_type);
     }
-    public override double Value()
+     public override double Value()
     {
         return _value;
     }
-
 }

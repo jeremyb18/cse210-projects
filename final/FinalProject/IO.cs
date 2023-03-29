@@ -1,13 +1,13 @@
 static class IO 
 {
-    static public int ReadInt(string txt)
+    static public double ReadDouble(string txt)
     {
-        int n;
+        double n;
         bool isNumeric = true;
         do{
             Console.Write(txt);
             string input = Console.ReadLine();
-            isNumeric = int.TryParse(input, out n);
+            isNumeric = double.TryParse(input, out n);
         }while(!isNumeric);
         return n;
     }
@@ -17,15 +17,21 @@ static class IO
         string input = Console.ReadLine();
         return input;
     }
-    static public List<Term> ReadEquation(string txt)
+    static public Equation ReadEquation(string txt)
     {
-        int n;
-        bool IsDoable = true;
+        bool IsValid = true;
+        Equation EQ;
         do{
             Console.Write(txt);
             string input = Console.ReadLine();
-            IsDoable = int.TryParse(input, out n);
-        }while(!IsDoable);
-        return new List<Term>{}; 
+            EQ = new Equation(input);
+            IsValid = EQ.IsValid;
+            if(!IsValid)
+            {
+                Console.WriteLine("\n----------Error your equation is not valid----------\n");
+                Console.WriteLine("Please write a valid equation below:\n");
+            }
+        }while(!IsValid);
+        return EQ; 
     }
 }

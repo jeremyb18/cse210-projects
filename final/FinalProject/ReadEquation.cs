@@ -3,6 +3,7 @@ class ReadEquation
     string EQstring = "";
     List<Term> Elements = new List<Term>{};
     List<string> Operators = new List<string>{"+","-","*","/","^","$","@"};
+    public bool IsValid = true;
     string Varibles = "abcdefghijklmnopqrstuvwxyz";
     public ReadEquation(string Input)
     {
@@ -10,6 +11,8 @@ class ReadEquation
         EQstring = EQstring.Replace("**", "^");
         EQstring = EQstring.Replace("sin", "$");
         EQstring = EQstring.Replace("cos", "@");
+        Separate();
+        IsEquationValid();
     }
     public List<Term> Separate()
     {
@@ -24,6 +27,7 @@ class ReadEquation
                     {
                         if(!IsParentheses())
                         {
+                            IsValid = false;
                             EQstring = StringMethod.RemoveFirst(EQstring);
                         }
                     }
@@ -32,7 +36,36 @@ class ReadEquation
         }
         return Elements;
     }
-    
+    public bool IsEquationValid()
+    {
+        if(Elements.Count != 0)
+        {
+            if(!Double.IsNaN(Elements[0].Value()) & !Double.IsNaN(Elements[Elements.Count-1].Value()))
+            {
+                for(int i = 1; i < Elements.Count-1; i++)
+                {
+                    string Type = Elements[i]._type;
+                    if(Double.IsNaN(Elements[i].Value()) & Double.IsNaN(Elements[i-1].Value()))
+                    {
+                        if(Type != "$" & Type != "@")
+                        {
+                            IsValid = false;
+                        }
+                    }
+                    
+                }
+                foreach(Term T in Elements)
+                {
+                    if(T._type == "Equation" & !T.IsValid)
+                    {
+                        IsValid = false;
+                    }
+                }
+            }else{IsValid = false;}
+            
+        }else{IsValid = false;}
+        return IsValid;
+    }
     public Term OderOfOperations()
     {
         CombineTrig();
@@ -139,10 +172,10 @@ class ReadEquation
     }
     private bool IsNumber()
     {
-        int n;
+        double n;
         string C = EQstring[0].ToString();
-        string Number = "";
-        if(int.TryParse(C, out n))
+        string stringNumber = "0";
+        if(double.TryParse(C, out n))
         {
             int Amount = Elements.Count;
             if(Amount > 0)
@@ -152,10 +185,9 @@ class ReadEquation
                     Elements.Add(new Operator("*"));
                 }
             }
-            while(int.TryParse(C, out n))
+            while(double.TryParse(stringNumber + C, out n))
             {
-                
-                Number += n;
+                stringNumber += C;
                 if(EQstring.Length > 1)
                 {
                     EQstring = EQstring.Remove(0,1);
@@ -167,7 +199,7 @@ class ReadEquation
                     break;
                 }
             }
-            Elements.Add(new Number(int.Parse(Number)));
+            Elements.Add(new Number(double.Parse(stringNumber)));
             return true;
         }
         return false;

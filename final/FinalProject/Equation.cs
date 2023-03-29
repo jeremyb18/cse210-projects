@@ -9,6 +9,7 @@ class Equation : Term
     {
         _EQ = new ReadEquation(EQstring);
         _terms = _EQ.Separate();
+        IsValid = _EQ.IsEquationValid();
         _term = _EQ.OderOfOperations();
         _type = "Equation";
         _value = 0;
@@ -19,9 +20,16 @@ class Equation : Term
     }
     public override double Value()
     {
-        return _term.Value();
+        if(IsValid)
+        {
+            return _term.Value();
+        }
+        else
+        {
+            return double.NaN;
+        }
+        
     }
-    
     public override void Display()
     {
         Console.Write("(");

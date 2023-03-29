@@ -3,16 +3,25 @@ class Program
 {
     static void Main(string[] args)
     {
-        Equation EQ;
+        Menu.main();
+        /*
+        ReadEquation REQ;
+        Console.WriteLine("Write your Equation below:");
         string input = "";
-        do
-        {
-            Console.WriteLine("Write your Equation below:");
-            input = IO.Read("- > ");
-            EQ = new Equation(input);
-            Console.WriteLine(EQ.Value());
+        input = IO.Read("- > ");
+        REQ = new ReadEquation(input);
+        List<Term> Terms = REQ.Separate();
+        bool IsValid = REQ.IsEquationValid();
+        Console.WriteLine("\n" + IsValid);
+        Term T = REQ.OderOfOperations();
+        Console.WriteLine(T.Value());
 
-        }while(input != "1"); 
-
+        
+        Equation EQ;
+        Console.WriteLine("Write your Equation below:");
+        EQ = IO.ReadEquation("- > ");
+        Console.WriteLine(EQ.Value());
+        */
+        
     }
 }

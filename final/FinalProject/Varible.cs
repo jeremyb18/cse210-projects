@@ -26,18 +26,10 @@ class Varible : Term
     }
     public void SetVarible()
     {
-        _value = IO.ReadInt($"Set {_name} = ");
+        _value = IO.ReadDouble($"Set {_name} = ");
         idx = _values.Count;
         _names.Add(_name);
         _values.Add(_value);
-    }
-    public void SetName(string Name)
-    {
-        _name = Name;
-    }
-    public string GetName()
-    {
-        return _name;
     }
     public override void Display()
     {

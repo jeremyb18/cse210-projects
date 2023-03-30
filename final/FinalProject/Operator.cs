@@ -1,78 +1,40 @@
 
 class Operator : Term
 {
-    Term _before;
-    Term _after;
-
+    List<Term> _Inputs = new List<Term>{};
      public Operator(string Type)
      {
         _type = Type;
      }
      public override void Assign(List<Term> data)
     {
-        if(data.Count == 1)
-        {
-            _after = data[0];
-            Calculate(0,_after.Value());
-        }
-        else if(data.Count == 2)
-        {
-            _before = data[0];
-            _after = data[1];
-            Calculate(_before.Value(),_after.Value());
-        }
+        _Inputs = data;
+        Calculate();
     }
-     public void Calculate(double Before,double After)
-     {
-        switch(_type)
-        {
-            case "+":
-                _value = Before + After;
-                break;
-            case "-":
-                _value = Before - After;
-                break;
-            case "*":
-                _value = Before * After;
-                break;
-            case "/":
-                _value = Before / After;
-                break;
-            case "^":
-                _value = Math.Pow(Before , After) ;
-                break;
-            case "$":
-                _value = Math.Sin(After);
-                break;
-            case "@":
-                _value = Math.Cos(After);
-                break;
-        }
-     }
      public double Calculate()
      {
         switch(_type)
         {
             case "+":
-                _value = _before.Value() + _after.Value();
+                _value = _Inputs[0].Value() + _Inputs[1].Value();
                 break;
             case "-":
-                _value = _before.Value() - _after.Value();
+                _value = _Inputs[0].Value() - _Inputs[1].Value();
                 break;
             case "*":
-                _value = _before.Value() * _after.Value();
+                _value = _Inputs[0].Value() * _Inputs[1].Value();
                 break;
             case "/":
-                _value = _before.Value() / _after.Value();
+                _value = _Inputs[0].Value() / _Inputs[1].Value();
                 break;
             case "^":
-                _value = Math.Pow(_before.Value() , _after.Value()) ;
+                _value = Math.Pow(_Inputs[0].Value() , _Inputs[1].Value()) ;
                 break;
             case "$":
-                _value = Math.Sin(_after.Value());
+                _value = Math.Sin(_Inputs[0].Value());
                 break;
             case "@":
-                _value = Math.Cos(_after.Value());
+                _value = Math.Cos(_Inputs[0].Value());
                 break;
         }
         return _value;
@@ -95,6 +57,10 @@ class Operator : Term
     }
      public override double Value()
     {
+        if(!double.IsNaN(_value))
+        {
+            Calculate();
+        }
         return _value;
     }
 }

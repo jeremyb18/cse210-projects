@@ -54,4 +54,20 @@ class Varible : Term
         _values[0] = Value;
         
     }
+    public static void DisplayVaribles()
+    {
+         for(int i = 4; i < _values.Count ; i++)
+        {
+            Console.WriteLine($"{i-3}. {_names[i]} = {_values[i]}");
+        }
+    }
+    public static void UpdateVarible(int idx)
+    {
+        if(idx < _values.Count)
+        {
+            Equation EQ = IO.ReadEquation($"Set {_names[idx]} = ");
+            _values[idx] = EQ.Value();
+        }
+        
+    }
 }

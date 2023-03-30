@@ -34,6 +34,10 @@ class Equation : Term
         _EQreader.Display();
         Console.Write(")");
     }
+    public void DisplaySimple()
+    {
+        _EQreader.Display();
+    }
     public void DisplayAnswer()
     {
         _EQreader.Display();

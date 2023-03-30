@@ -3,50 +3,16 @@ static class Menu
     static MainEquation MainEQ;
     static List<double> Range = new List<double>{-4,4};
     static double SolveStepSize = 0.01;
+    static List<string> Options = new List<string>{"Quit"};
     public static void main()
     {
         Console.WriteLine($"\n=============== Welcome to Equation Solver ===============\n");
-        Console.WriteLine("Write your Equation below:\n");
-        MainEQ = IO.ReadMainEquation("- > ");
-        string Type = MainEQ.FindTypeOfEquation();
-        Console.WriteLine(Type);
-        List<string> Options = new List<string>{"Quit"};
-        if(Type == "S")
-        {
-            Options = new List<string>{"Solve", "View Varibles", "Settings","New Equation" , "Quit"};
-        }
-        else if(Type == "SX" || Type == "XX" || Type == "XS" )
-        {
-            Options = new List<string>{"Solve For X","View Varibles", "Settings","New Equation" , "Quit"};
-        }
-
-        for(int i = 0; i < Options.Count ; i++)
-        {
-            Console.WriteLine($" {i+1}. {Options[i]}");
-        }
-        int input = IO.ReadInt("Select a choice from the menu: ") -1;
-        switch(Options[input])
-        {
-            case "Solve":
-                SimpleSolve();
-                break;
-            case "Solve For X":
-                SolveForX();
-                break;
-            case "View Varibles":
-                break;
-            case "Settings":
-                break;
-            case "New Equation":
-                main();
-                break;
-            case "Quit":
-                break;
-        }
+        NewEquation();
     }
     static void SimpleSolve()
     {
         MainEQ.DisplayAnswers();
+        Pause();
     }
     static void SolveForX()
     {
@@ -59,39 +25,206 @@ static class Menu
             
             Varible.SetX(x);
             List<double> Values = MainEQ.GetValues();
-            y = Values[0] - Values[1];
-            Console.Write($"{y} ");
-            int Scale = (int)(1/SolveStepSize);
-            if(Math.Abs(Scale*x) / Scale == 0) 
+            if(Values.Count == 2)
             {
-                Zeros.Add(Math.Abs(Scale*x) / Scale);
+                y = Values[0] - Values[1];
             }
-            else if(y * preY < 0 & preY != 0)
+            else
             {
-                Zeros.Add(Math.Abs(Scale*x) / Scale);
+                y = Values[0];
+            }
+            
+            if(y * preY < 0 & preY != 0 || y == 0)
+            {
+                double m = (y-preY)/SolveStepSize;
+                double xZero = preY/m + (x - SolveStepSize);
+                Zeros.Add(xZero);
             }
             preY = y;
             x += SolveStepSize;
         }
         if(Zeros.Count > 0)
         {
-            Console.Write("X = ");
+            Console.Write("\nX = ");
             for(int i = 0; i < Zeros.Count; i ++)
             {
-                Console.Write(Zeros[i]);
+                Console.Write($"{Zeros[i]:F3}");
                 if(i < Zeros.Count-1)
                 {
                     Console.Write(",");
                 }
-            }            
+            }
+            Console.WriteLine();      
         }
         else
         {
-            Console.Write($"There is no solutions for X with the range of {{{Range[0]}, {Range[1]}}}");
+            Console.Write($"\nThere is no solutions for X with the range of {{{Range[0]}, {Range[1]}}}\n");
+        }
+        Pause();
+    }
+    static void FindMinMax()
+    {
+        double x = Range[0];
+        double nextY = double.NaN;
+        double y = double.NaN;
+        double preY = double.NaN;
+        List<double[]> Mins = new List<double[]>{};
+        List<double[]> Maxs = new List<double[]>{};
+        while(x < Range[1] - SolveStepSize)
+        {
+            preY = y;
+            y = nextY;
+            Varible.SetX(x);
+            List<double> Values = MainEQ.GetValues();
+            if(MainEQ._Type == "XY" || MainEQ._Type == "X")
+            {
+                nextY = Values[0];
+            }
+            else if(MainEQ._Type == "YX")
+            {
+                nextY = Values[1];
+            }
+            if(!double.IsNaN(preY))
+            {
+                if(y > preY & y > nextY)
+                {
+                    Maxs.Add( new double[]{x - SolveStepSize,y});
+                }
+                if(y < preY & y < nextY)
+                {
+                    Mins.Add(new double[]{x - SolveStepSize,y});
+                }
+            }
+            
+            x += SolveStepSize;
+        }
+        if(Maxs.Count > 0)
+        {
+            Console.Write("\nMaximums at Points: ");
+            for(int i = 0; i < Maxs.Count; i ++)
+            {
+                Console.Write($"({Maxs[i][0]:F2} , {Maxs[i][1]:F2})");
+                if(i < Maxs.Count-1)
+                {
+                    Console.Write(", ");
+                }
+            }         
+            Console.WriteLine();   
+        }
+        if(Mins.Count > 0)
+        {
+            Console.Write("\nMinimums at Points: ");
+            for(int i = 0; i < Mins.Count; i ++)
+            {
+                Console.Write($"({Mins[i][0]:F2} , {Mins[i][1]:F2})");
+                if(i < Mins.Count-1)
+                {
+                    Console.Write(", ");
+                }
+            }     
+            Console.WriteLine();         
+        }
+        if(Mins.Count == 0 & Maxs.Count == 0)
+        {
+            Console.Write($"There is no Local Minimums and Maximums for X with the range of {{{Range[0]}, {Range[1]}}} \n");
+        }
+        Pause();
+    }
+    static void menu()
+    {
+        MainEQ.DisplayEquation();
+        for(int i = 0; i < Options.Count ; i++)
+        {
+            Console.WriteLine($" {i+1}. {Options[i]}");
+        }
+        int input = IO.ReadInt("Select a choice from the menu: ") -1;
+        switch(Options[input])
+        {
+            case "Solve":
+                SimpleSolve();
+                menu();
+                break;
+            case "Solve For X":
+                SolveForX();
+                menu();
+                break;
+            case "Solve for Y=0":
+                SolveForX();
+                menu();
+                break;
+            case "Find Local Minimums and Maximums":
+                FindMinMax();
+                menu();
+                break;
+            case "Varibles":
+                Varibles();
+                menu();
+                break;
+            case "Settings":
+                Settings();
+                break;
+            case "New Equation":
+                NewEquation();
+                break;
+            case "Quit":
+                break;
         }
     }
-    static void XY()
+    static void NewEquation()
     {
+        Console.WriteLine("Write your Equation below:\n");
+        MainEQ = IO.ReadMainEquation("- > ");
+        string Type = MainEQ.FindTypeOfEquation();
+        if(Type == "S")
+        {
+            Options = new List<string>{"Solve", "Varibles", "Settings","New Equation" , "Quit"};
+        }
+        else if(Type == "SX" || Type == "XX" || Type == "XS" )
+        {
+            Options = new List<string>{"Solve For X","Varibles", "Settings","New Equation" , "Quit"};
+        }
+        else if(Type == "XY" || Type == "YX" || Type == "X")
+        {
+            Options = new List<string>{"Solve for Y=0","Find Local Minimums and Maximums", "Varibles" , "Settings","New Equation" , "Quit"};
+        }
+
+        menu();
+    }
+    static void Settings()
+    {
+        List<string> SettingOptions = new List<string>{"Range","Step Size","Back"};
+        for(int i = 0; i < SettingOptions.Count ; i++)
+        {
+            Console.WriteLine($" {i+1}. {SettingOptions[i]}");
+        }
+        int input = IO.ReadInt("Select a choice from the menu: ") -1;
+        switch(SettingOptions[input])
+        {
+            case "Range":
+                Console.WriteLine($"Current Range: ({Range[0]}, {Range[1]})");
+                Range[0] = IO.ReadDouble("Minimum Range -> ");
+                Range[1] = IO.ReadDouble("Maximum Range -> ");
+                menu();
+                break;
+            case "Step Size":
+                Console.WriteLine($"Current Step Size: {SolveStepSize}");
+                SolveStepSize = IO.ReadDouble("Set Step -> ");
+                menu();
+                break;
+            case "Back":
+                menu();
+                break;
+        }
+    }
+    static void Pause()
+    {
+        IO.Read("\nPress Enter to continue:\n");
+    }
+    static void Varibles()
+    {
+        Varible.DisplayVaribles();
+        int input = IO.ReadInt("Select a choice from the menu: ") +3;
+        Varible.UpdateVarible(input);
 
     }
 }

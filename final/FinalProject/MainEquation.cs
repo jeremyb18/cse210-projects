@@ -2,7 +2,7 @@ class MainEquation
 {
     public bool IsValid = true;
     List<Equation> _EQs = new List<Equation>{};
-    
+    public string _Type;
     public MainEquation(string EQstring)
     {
        List<string>  ListEQ = EQstring.Split("=").ToList();
@@ -26,7 +26,7 @@ class MainEquation
        {
             IsValid = false;
        }
-       FindTypeOfEquation();
+       _Type = FindTypeOfEquation();
     }
     public string FindTypeOfEquation()
     {
@@ -41,21 +41,20 @@ class MainEquation
                {
                     TypesOfEquation += "Y";
                }
-               else
+               else if(!EQ.Has("x") & !EQ.Has("y"))
                {
                     TypesOfEquation += "S";
+                    
+               }
+               else
+               {
+                    IsValid = false;
                }
           }
-          if(_EQs.Count == 1)
+          
+          if(TypesOfEquation == "YY" || TypesOfEquation == "Y")
           {
-               if(TypesOfEquation[0].ToString() == "X")
-               {
-                    TypesOfEquation += "Y";
-               }
-               if(TypesOfEquation[0].ToString() == "Y")
-               {
-                    TypesOfEquation = "S";
-               }
+               IsValid = false;
           }
           return TypesOfEquation;
     }
@@ -67,6 +66,19 @@ class MainEquation
                Console.WriteLine();
           }
 
+    }
+    public void DisplayEquation()
+    {
+          Console.WriteLine();
+          for(int i = 0; i < _EQs.Count; i++)
+          {
+               _EQs[i].DisplaySimple();
+               if(i == 0)
+               {
+                    Console.Write(" = ");
+               }
+          }
+          Console.WriteLine();
     }
      public List<double> GetValues()
      {

@@ -11,6 +11,17 @@ static class IO
         }while(!isNumeric);
         return n;
     }
+    static public int ReadInt(string txt)
+    {
+        int n;
+        bool isNumeric = true;
+        do{
+            Console.Write(txt);
+            string input = Console.ReadLine();
+            isNumeric = int.TryParse(input, out n);
+        }while(!isNumeric);
+        return n;
+    }
     static public string Read(string txt)
     {
         Console.Write(txt);
@@ -25,6 +36,23 @@ static class IO
             Console.Write(txt);
             string input = Console.ReadLine();
             EQ = new Equation(input);
+            IsValid = EQ.IsValid;
+            if(!IsValid)
+            {
+                Console.WriteLine("\n----------Error your equation is not valid----------\n");
+                Console.WriteLine("Please write a valid equation below:\n");
+            }
+        }while(!IsValid);
+        return EQ; 
+    }
+    static public MainEquation ReadMainEquation(string txt)
+    {
+        bool IsValid = true;
+        MainEquation EQ;
+        do{
+            Console.Write(txt);
+            string input = Console.ReadLine();
+            EQ = new MainEquation(input);
             IsValid = EQ.IsValid;
             if(!IsValid)
             {

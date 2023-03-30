@@ -1,8 +1,8 @@
 class Varible : Term
 {
     string _name;
-    static List<string> _names = new List<string>{"x","pi","e"};
-    static List<double> _values = new List<double>{0,Math.PI, Math.Exp(1)};
+    static List<string> _names = new List<string>{"x","y","pi","e"};
+    static List<double> _values = new List<double>{0,0,Math.PI, Math.Exp(1)};
     int idx = 0;
     public Varible(string Name)
     {
@@ -38,10 +38,20 @@ class Varible : Term
     }
     public override double Value()
     {
+        _value = _values[idx];
         return _value;
+    }
+    public string GetName()
+    {
+        return _name;
     }
     public override void Assign(List<Term> data)
     {
         _value = data[0].Value();
+    }
+    public static void SetX(double Value)
+    {
+        _values[0] = Value;
+        
     }
 }

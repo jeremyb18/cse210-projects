@@ -12,8 +12,6 @@ class ReadEquation
         EQstring = EQstring.Replace("**", "^");
         EQstring = EQstring.Replace("sin", "$");
         EQstring = EQstring.Replace("cos", "@");
-        //Separate();
-        //IsEquationValid();
     }
     public List<Term> Separate()
     {
@@ -50,6 +48,7 @@ class ReadEquation
                     {
                         if(Type != "$" & Type != "@")
                         {
+                            Console.WriteLine(Type);
                             IsValid = false;
                         }
                     }
@@ -62,7 +61,15 @@ class ReadEquation
                         IsValid = false;
                     }
                 }
-            }else{IsValid = false;}
+            }
+            else
+            {
+                if(Elements[0]._type != "$" & Elements[0]._type != "@" || Double.IsNaN(Elements[Elements.Count-1].Value()))
+                {
+                    
+                    IsValid = false;
+                }
+            }
             
         }else{IsValid = false;}
         return IsValid;
@@ -87,7 +94,6 @@ class ReadEquation
                 if(Double.IsNaN(nextValue))
                 {
                     Console.WriteLine($"Error in Trig: {Type} : {nextValue}");
-                    Term.IsRunnable = false;
                     break;
                 }
             }
@@ -120,7 +126,6 @@ class ReadEquation
                 if(Double.IsNaN(nextValue) || Double.IsNaN(pastValue))
                 {
                     Console.WriteLine($"Error with {O1} and {O2}: {Type} : {pastValue} : {nextValue}");
-                    Term.IsRunnable = false;
                     break;
                 }
                 List<Term> data = new List<Term>{};
@@ -145,7 +150,6 @@ class ReadEquation
                 if(Double.IsNaN(nextValue) || Double.IsNaN(pastValue))
                 {
                     Console.WriteLine($"Error with {O}: {Type} : {pastValue} : {nextValue}");
-                    Term.IsRunnable = false;
                     break;
                 }
                 List<Term> data = new List<Term>{};

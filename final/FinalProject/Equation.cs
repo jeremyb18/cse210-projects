@@ -2,9 +2,7 @@ class Equation : Term
 {
     List<Term> _terms = new List<Term>();
     Term _term;
-    public static bool IsRunable = true;
     ReadEquation _EQreader;
-    
     public Equation(string EQstring)
     {
         _EQreader = new ReadEquation(EQstring);
@@ -40,5 +38,33 @@ class Equation : Term
     {
         _EQreader.Display();
         Console.Write($" = {Value()}");
+    }
+    public bool Has(string Name)
+    {
+        List<Varible> Vars = _terms.OfType<Varible>().ToList();
+        List<Equation> EQs = _terms.OfType<Equation>().ToList();
+        foreach(Varible V in Vars)
+        {
+            if(V.GetName() == Name)
+            {
+                return true;
+            }
+        }
+        foreach(Equation EQ in EQs)
+        {
+            if(EQ.Has(Name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool HasOnlyY()
+    {
+        if(Has("y") & _terms.Count == 1)
+        {
+            return true;
+        }
+        return false;
     }
 }

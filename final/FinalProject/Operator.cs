@@ -79,7 +79,19 @@ class Operator : Term
      }
      public override void Display()
     {
-        Console.Write(_type);
+        if(_type == "@")
+        {
+            Console.Write("Cos");
+        } 
+        else if(_type == "$")
+        {
+            Console.Write("Sin");
+        }
+        else
+        {
+            Console.Write(_type);
+        }
+
     }
      public override double Value()
     {

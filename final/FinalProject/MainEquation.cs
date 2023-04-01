@@ -1,15 +1,15 @@
 class MainEquation
 {
-    public bool IsValid = true;
+    bool _IsValid = true;
     List<Equation> _EQs = new List<Equation>{};
-    public string _Type;
+    private string _type;
     public MainEquation(string EQstring)
     {
        List<string>  ListEQ = EQstring.Split("=").ToList();
        if(ListEQ.Count == 1)
        {
             _EQs.Add(new Equation(EQstring));
-            IsValid = _EQs[0].IsValid;
+            _IsValid = _EQs[0].IsValid;
        }
        else if(ListEQ.Count == 2)
        {
@@ -18,15 +18,15 @@ class MainEquation
                 _EQs.Add(new Equation(EQ));
                 if(!_EQs[_EQs.Count-1].IsValid)
                 {
-                    IsValid = false;
+                    _IsValid = false;
                 }
             }
        }
        else 
        {
-            IsValid = false;
+            _IsValid = false;
        }
-       _Type = FindTypeOfEquation();
+       _type = FindTypeOfEquation();
     }
     public string FindTypeOfEquation()
     {
@@ -48,13 +48,13 @@ class MainEquation
                }
                else
                {
-                    IsValid = false;
+                    _IsValid = false;
                }
           }
           
           if(TypesOfEquation == "YY" || TypesOfEquation == "Y")
           {
-               IsValid = false;
+               _IsValid = false;
           }
           return TypesOfEquation;
     }
@@ -67,7 +67,7 @@ class MainEquation
           }
 
     }
-    public void DisplayEquation()
+     public void DisplayEquation()
     {
           Console.WriteLine();
           for(int i = 0; i < _EQs.Count; i++)
@@ -76,6 +76,10 @@ class MainEquation
                if(i == 0)
                {
                     Console.Write(" = ");
+               }
+               if(_EQs.Count == 1)
+               {
+                    Console.Write("y ");
                }
           }
           Console.WriteLine();
@@ -88,5 +92,13 @@ class MainEquation
                Answers.Add(EQ.Value());
           }
           return Answers;
+     }
+     public bool IsValid()
+     {
+          return _IsValid;
+     }
+     public string getType()
+     {
+          return _type;
      }
 }

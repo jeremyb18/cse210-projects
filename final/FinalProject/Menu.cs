@@ -9,11 +9,6 @@ static class Menu
         Console.WriteLine($"\n=============== Welcome to Equation Solver ===============\n");
         NewEquation();
     }
-    static void SimpleSolve()
-    {
-        MainEQ.DisplayAnswers();
-        Pause();
-    }
     static void SolveForX()
     {
         double x = Range[0];
@@ -76,11 +71,11 @@ static class Menu
             y = nextY;
             Varible.SetX(x);
             List<double> Values = MainEQ.GetValues();
-            if(MainEQ._Type == "XY" || MainEQ._Type == "X")
+            if(MainEQ.getType() == "XY" || MainEQ.getType() == "X")
             {
                 nextY = Values[0];
             }
-            else if(MainEQ._Type == "YX")
+            else if(MainEQ.getType() == "YX")
             {
                 nextY = Values[1];
             }
@@ -132,7 +127,6 @@ static class Menu
     }
     static void menu()
     {
-        MainEQ.DisplayEquation();
         for(int i = 0; i < Options.Count ; i++)
         {
             Console.WriteLine($" {i+1}. {Options[i]}");
@@ -140,10 +134,6 @@ static class Menu
         int input = IO.ReadInt("Select a choice from the menu: ") -1;
         switch(Options[input])
         {
-            case "Solve":
-                SimpleSolve();
-                menu();
-                break;
             case "Solve For X":
                 SolveForX();
                 menu();
@@ -175,17 +165,20 @@ static class Menu
         Console.WriteLine("Write your Equation below:\n");
         MainEQ = IO.ReadMainEquation("- > ");
         string Type = MainEQ.FindTypeOfEquation();
-        if(Type == "S")
+        if(Type == "S" || Type == "SS")
         {
-            Options = new List<string>{"Solve", "Varibles", "Settings","New Equation" , "Quit"};
+            Options = new List<string>{"Varibles", "Settings","New Equation" , "Quit"};
+            MainEQ.DisplayAnswers();
         }
         else if(Type == "SX" || Type == "XX" || Type == "XS" )
         {
             Options = new List<string>{"Solve For X","Varibles", "Settings","New Equation" , "Quit"};
+            MainEQ.DisplayEquation();
         }
         else if(Type == "XY" || Type == "YX" || Type == "X")
         {
             Options = new List<string>{"Solve for Y=0","Find Local Minimums and Maximums", "Varibles" , "Settings","New Equation" , "Quit"};
+            MainEQ.DisplayEquation();
         }
 
         menu();

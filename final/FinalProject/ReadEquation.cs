@@ -5,7 +5,7 @@ class ReadEquation
     List<Term> _SimplifiedElements = new List<Term>{};
     List<string> _Operators = new List<string>{"+","-","*","/","^","$","@"};
     string _Varibles = "abcdefghijklmnopqrstuvwxyz";
-    public bool IsValid = true;
+    bool _IsValid = true;
     public ReadEquation(string Input)
     {
         _EQstring = Input.Replace(" ", "").ToLower();
@@ -26,7 +26,7 @@ class ReadEquation
                     {
                         if(!IsParentheses())
                         {
-                            IsValid = false;
+                            _IsValid = false;
                             _EQstring = StringMethod.RemoveFirst(_EQstring);
                         }
                     }
@@ -49,7 +49,7 @@ class ReadEquation
                         if(Type != "$" & Type != "@")
                         {
                             Console.WriteLine(Type);
-                            IsValid = false;
+                            _IsValid = false;
                         }
                     }
                     
@@ -58,7 +58,7 @@ class ReadEquation
                 {
                     if(T._type == "Equation" & !T.IsValid())
                     {
-                        IsValid = false;
+                        _IsValid = false;
                     }
                 }
             }
@@ -67,12 +67,12 @@ class ReadEquation
                 if(_Elements[0]._type != "$" & _Elements[0]._type != "@" || Double.IsNaN(_Elements[_Elements.Count-1].Value()))
                 {
                     
-                    IsValid = false;
+                    _IsValid = false;
                 }
             }
             
-        }else{IsValid = false;}
-        return IsValid;
+        }else{_IsValid = false;}
+        return _IsValid;
     }
     public Term OderOfOperations()
     {

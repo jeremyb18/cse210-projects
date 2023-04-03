@@ -7,7 +7,7 @@ class Equation : Term
     {
         _EQreader = new ReadEquation(EQstring);
         _terms = _EQreader.Separate();
-        IsValid = _EQreader.IsEquationValid();
+        _IsValid = _EQreader.IsEquationValid();
         _term = _EQreader.OderOfOperations();
         _type = "Equation";
         _value = 0;
@@ -18,7 +18,7 @@ class Equation : Term
     }
     public override double Value()
     {
-        if(IsValid)
+        if(_IsValid)
         {
             return _term.Value();
         }

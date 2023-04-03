@@ -36,7 +36,7 @@ static class IO
             Console.Write(txt);
             string input = Console.ReadLine();
             EQ = new Equation(input);
-            IsValid = EQ.IsValid;
+            IsValid = EQ.IsValid();
             if(!IsValid)
             {
                 Console.WriteLine("\n----------Error your equation is not valid----------\n");

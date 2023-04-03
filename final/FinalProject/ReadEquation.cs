@@ -56,7 +56,7 @@ class ReadEquation
                 }
                 foreach(Term T in _Elements)
                 {
-                    if(T._type == "Equation" & !T.IsValid)
+                    if(T._type == "Equation" & !T.IsValid())
                     {
                         IsValid = false;
                     }

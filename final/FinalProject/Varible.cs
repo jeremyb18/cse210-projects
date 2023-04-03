@@ -60,13 +60,18 @@ class Varible : Term
         {
             Console.WriteLine($"{i-3}. {_names[i]} = {_values[i]}");
         }
+        Console.WriteLine($"{_values.Count-3}. Back");
     }
     public static void UpdateVarible(int _idx)
     {
-        if(_idx < _values.Count)
+        if(_idx < _values.Count & _idx > 0)
         {
             Equation EQ = IO.ReadEquation($"Set {_names[_idx]} = ");
             _values[_idx] = EQ.Value();
+        }
+        else if(_idx > _values.Count)
+        {
+            Menu.Varibles();
         }
         
     }

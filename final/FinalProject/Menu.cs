@@ -213,9 +213,10 @@ static class Menu
     {
         IO.Read("\nPress Enter to continue:\n");
     }
-    static void Varibles()
+    public static void Varibles()
     {
         Varible.DisplayVaribles();
+
         int input = IO.ReadInt("Select a choice from the menu: ") +3;
         Varible.UpdateVarible(input);
 

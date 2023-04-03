@@ -9,14 +9,14 @@ class MainEquation
        if(ListEQ.Count == 1)
        {
             _EQs.Add(new Equation(EQstring));
-            _IsValid = _EQs[0].IsValid;
+            _IsValid = _EQs[0].IsValid();
        }
        else if(ListEQ.Count == 2)
        {
             foreach(string EQ in ListEQ)
             {
                 _EQs.Add(new Equation(EQ));
-                if(!_EQs[_EQs.Count-1].IsValid)
+                if(!_EQs[_EQs.Count-1].IsValid())
                 {
                     _IsValid = false;
                 }
